@@ -12,7 +12,7 @@
 	url = git://github.com/opennetworklinux/common
 [submodule "submodules/linux-3.8.13"]
 	path = submodules/linux-3.8.13
-	url = git://github.com/opennetworklinux/linux-3.8.13
+	url = git://github.com/jay-caoj/linux-3.8.13
 [submodule "submodules/onlp"]
 	path = submodules/onlp
 	url = git://github.com/opennetworklinux/ONLP
