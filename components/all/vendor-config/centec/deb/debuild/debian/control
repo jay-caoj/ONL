@@ -1,0 +1,12 @@
+Source: vendor-config-centec
+Section: misc
+Priority: optional
+Maintainer: Support <support@bigswitch.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.8.4
+
+Package: vendor-config-centec
+Architecture: all
+Depends: vendor-config-onl
+Description: Vendor Configuration files for centec.
+ Vendor Configuration files for centec.

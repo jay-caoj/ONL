@@ -53,3 +53,6 @@
 [submodule "submodules/loxigen-artifacts"]
 	path = submodules/loxigen-artifacts
 	url = git://github.com/floodlight/loxigen-artifacts
+[submodule "submodules/onlp-centec"]
+	path = submodules/onlp-centec
+	url = git://github.com/jay-caoj/onlp-centec

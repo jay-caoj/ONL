@@ -1,0 +1,12 @@
+Source: platform-powerpc-centec-e580-48x6q-r0
+Section: misc
+Priority: optional
+Maintainer: Support <support@bigswitch.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.8.4
+
+Package: platform-powerpc-centec-e580-48x6q-r0
+Architecture: powerpc
+Depends: 
+Description: Centec E580 48X6Q Platform Files
+ Centec E580 48X6Q Platform Files
