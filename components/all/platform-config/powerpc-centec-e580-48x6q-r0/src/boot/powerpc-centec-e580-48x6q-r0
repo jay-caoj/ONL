@@ -7,7 +7,7 @@
 #
 ############################################################
 echo "soc.0/ethernet.1 ma1" > /etc/onl_net
-echo "kernel-e500mc" > /etc/onl_kernel
+echo "kernel-85xx" > /etc/onl_kernel
 echo "initrd-powerpc" > /etc/onl_initrd
 echo "rootfs-powerpc" > /etc/onl_rootfs
 echo "" > /etc/onl_crashkernel

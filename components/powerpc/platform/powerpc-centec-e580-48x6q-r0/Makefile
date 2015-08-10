@@ -22,8 +22,8 @@ ifndef ONL
 $(error $$ONL is undefined.)
 endif
 
-ONL_REQUIRED_PACKAGES := kernel-e500mc:powerpc \
-				 kernel-e500mc-dtbs:powerpc \
+ONL_REQUIRED_PACKAGES := kernel-85xx:powerpc \
+				 kernel-85xx-dtbs:powerpc \
 				 initrd-powerpc:powerpc
 
 include $(ONL)/make/component.mk

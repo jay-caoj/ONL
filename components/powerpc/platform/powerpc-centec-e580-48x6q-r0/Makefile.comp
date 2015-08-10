@@ -29,9 +29,9 @@ else
 include $(ONL)/make/config.mk
 endif
 
-KERNEL.BIN.GZ := $(shell $(ONL_PKG_INSTALL) kernel-e500mc:powerpc --find-file kernel-e500mc.bin.gz)
+KERNEL.BIN.GZ := $(shell $(ONL_PKG_INSTALL) kernel-85xx:powerpc --find-file kernel-85xx.bin.gz)
 INITRD := $(shell $(ONL_PKG_INSTALL) initrd-powerpc:powerpc --find-file initrd-powerpc)
-DTB := $(shell $(ONL_PKG_INSTALL) kernel-e500mc-dtbs:powerpc --find-file powerpc-centec-e580-r0.dtb)
+DTB := $(shell $(ONL_PKG_INSTALL) kernel-85xx-dtbs:powerpc --find-file powerpc-centec-e580-r0.dtb)
 PLATFORM_NAME := powerpc-centec-e580-48x6q-r0
 
 $(info $(KERNEL.BIN.GZ) $(DTB))
