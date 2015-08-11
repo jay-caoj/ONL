@@ -53,3 +53,6 @@
 [submodule "submodules/onlp-centec"]
 	path = submodules/onlp-centec
 	url = git://github.com/jay-caoj/onlp-centec
+[submodule "submodules/linux-3.9.6"]
+	path = submodules/linux-3.9.6
+	url = git://github.com/jay-caoj/linux-3.9.6
