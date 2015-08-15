@@ -361,6 +361,134 @@ installer_standard_blockdev_install () {
     installer_umount_blockdev "${blockdev}"
 }
 
+installer_platform_nand_loader() {
+    local loader_dev=$1
+
+    if [ "${platform_loader}" ]; then
+        # Platform specific override
+        local loader="${platform_loader}"
+    else
+        # Default platform loader
+        local loader="${installer_dir}/onl.${installer_platform}.loader"
+    fi
+
+    if [ "${platform_loader_dst_name}" ]; then
+        local loaderdst="${platform_loader_dst_name}"
+    else
+        local loaderdst="onl-loader"
+    fi
+
+
+    if [ -f "${loader}" ]; then
+        installer_say "Installing the Open Network Loader(NAND)..."
+        nandwrite -p /dev/${loader_dev} ${loader}
+    else
+        installer_say "The platform loader file is missing. This is unexpected - ${loader}"
+        exit 1
+    fi
+}
+
+installer_platform_nand_bootconfig() {
+    local config_dev=$1
+
+    # Is there a platform bootconfig file?
+    if [ -f "${installer_platform_dir}/boot-config" ]; then
+        bootconfig=$(cat ${installer_platform_dir}/boot-config)
+    # Is there a platform bootconfig string?
+    elif [ "${platform_bootconfig}" ]; then
+        bootconfig="${platform_bootconfig}"
+    # Use the default.
+    else
+        if [ "${installer_mode_standalone}" ]; then
+            bootconfig="SWI=flash2:onl-${installer_arch}.swi\nNETDEV=ma1\n"
+        else
+            bootconfig='SWI=flash2:.ztn-onl.swi\nNETDEV=ma1\nNETAUTO=dhcp\n'
+        fi
+    fi
+    # Write the boot-config file to the given partition.
+    installer_say "Writing boot-config(NAND)."
+    echo -e "${bootconfig}" > /tmp/boot-config
+
+    cp /tmp/boot-config /mnt/flash/
+    rm /tmp/boot-config
+}
+
+installer_platform_nand_swi() {
+    local swi_dev=$1
+
+    # Is there a platform-specific SWI?
+    if [ -f "${installer_platform_dir}/${installer_platform}.swi" ]; then
+        local swi="${installer_platform_dir}/${installer_platform}.swi"
+    # Is there a default SWI?
+    elif [ -f "${installer_dir}/onl-${installer_arch}.swi" ]; then
+        local swi="${installer_dir}/onl-${installer_arch}.swi"
+    fi
+
+    if [ -f "${swi}" ]; then
+        installer_say "Installing Open Network Software Image(NAND)..."
+        if [ "${platform_swi_install_name}" ]; then
+            local swidst="${platform_swi_install_name}"
+        else
+            if [ "${installer_mode_standalone}" ]; then
+                local swidst="onl-${installer_arch}.swi"
+            else
+                local swidst=".ztn-onl.swi"
+            fi
+        fi
+        cd /mnt/flash2
+        cp ${swi} /mnt/flash2/${swidst}
+    else
+        installer_say "No Open Network Software Image available for installation. Post-install ZTN installation will be required."
+    fi
+}
+
+installer_nand_install () {
+    local loader_dev=$1
+    local config_dev=$2
+    local swi_dev=$3
+
+    # format for loader, /mnt/flash, and /mnt/flash2
+    flash_erase /dev/${loader_dev} 0 128
+
+    flash_erase /dev/${config_dev} 0 1792
+    echo "Format boot config partion"
+    ubiformat  /dev/mtd4
+    sleep 20
+    ubiattach /dev/ubi_ctrl -m 4
+    sleep 5
+    ubimkvol  /dev/ubi0 -N boot -s 872415232
+    sleep 1
+    mkdir /mnt/flash/
+    echo "Mounting boot config partion"
+    mount -t ubifs -o sync ubi0:boot /mnt/flash
+    sleep 2
+
+    flash_erase /dev/${swi_dev} 0 2048
+    echo "Format swi partion"
+    ubiformat  /dev/mtd5
+    sleep 20
+    ubiattach /dev/ubi_ctrl -m 5
+    sleep 5
+    ubimkvol  /dev/ubi1 -N system -s 996147200
+    sleep 1
+    mkdir /mnt/flash2/
+    echo "Mounting swi partion"
+    mount -t ubifs -o sync ubi1:system /mnt/flash2
+    sleep 2
+
+    # Copy the platform loader to the first partition.
+    installer_platform_nand_loader "${loader_dev}"
+
+    # Set the boot-config file
+    installer_platform_nand_bootconfig "${config_dev}"
+
+    # Copy the packaged SWI to the third partition.
+    installer_platform_nand_swi "${swi_dev}"
+
+    sync
+    #umount /mnt/flash
+    #umount /mnt/flash2
+}
 
 ############################################################
 #

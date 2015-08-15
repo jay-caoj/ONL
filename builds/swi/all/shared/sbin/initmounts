@@ -92,6 +92,31 @@ try_mount_block()
   fi
 }
 
+try_mount_nand()
+{
+  local dev devpart mount
+  dev=$1; shift
+  devpart=$1; shift
+  mount=$1; shift
+
+  if [ ! -e /mnt/$mount ]; then
+
+    mkdir -p /mnt/$mount
+    if test "$mount" = "flash"; then
+      #ubiattach --vid-hdr-offset 4096 /dev/ubi_ctrl -m 4
+      mount -t ubifs -o sync ubi0:$devpart /mnt/$mount || return
+      #echo "mounted $devpart --> /mnt/$mount"
+    fi
+
+    if test "$mount" = "flash2"; then
+      #ubiattach --vid-hdr-offset 4096 /dev/ubi_ctrl -m 5
+      mount -t ubifs -o sync ubi1:$devpart /mnt/$mount || return
+      #echo "mounted $devpart --> /mnt/$mount"
+    fi
+
+  fi
+}
+
 try_mount_sysdev()
 {
   local syspath devpart mount
@@ -222,6 +247,9 @@ try_mount()
     UUID=*)
       uuid=`echo "$devspec" | sed -e 's/UUID=\(.*\)/\1/'`
       try_mount_uuid "$uuid" "$devpart" "$mount"
+      ;;
+    nand)
+      try_mount_nand "$devspec" "$devpart" "$mount"
       ;;
     *)
       echo "*** invalid block specifier: $devspec" 1>&2

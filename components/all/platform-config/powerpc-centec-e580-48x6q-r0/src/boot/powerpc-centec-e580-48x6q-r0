@@ -12,8 +12,8 @@ echo "initrd-powerpc" > /etc/onl_initrd
 echo "rootfs-powerpc" > /etc/onl_rootfs
 echo "" > /etc/onl_crashkernel
 
-echo "block/sda sda2 flash" > /etc/onl_mounts
-echo "block/sda sda3 flash2" >> /etc/onl_mounts
+echo "nand boot flash" > /etc/onl_mounts
+echo "nand system flash2" >> /etc/onl_mounts
 
 # TODO - Need fw_env.config
 echo "# MTD device name       Device offset   Env. size       Flash sector size" > /etc/fw_env.config
