@@ -1,6 +1,3 @@
-[submodule "submodules/loader"]
-	path = submodules/loader
-	url = git://github.com/opennetworklinux/loader
 [submodule "submodules/infra"]
 	path = submodules/infra
 	url = git://github.com/floodlight/infra
