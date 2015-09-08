@@ -1,0 +1,12 @@
+Source: platform-powerpc-centec-e580-20q4z-r0
+Section: misc
+Priority: optional
+Maintainer: Support <support@bigswitch.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.8.4
+
+Package: platform-powerpc-centec-e580-20q4z-r0
+Architecture: powerpc
+Depends: 
+Description: Centec E580 20Q4Z Platform Files
+ Centec E580 20Q4Z Platform Files

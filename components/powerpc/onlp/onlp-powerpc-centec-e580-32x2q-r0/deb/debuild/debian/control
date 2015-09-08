@@ -1,0 +1,12 @@
+Source: onlp-powerpc-centec-e580-32x2q-r0
+Section: misc
+Priority: optional
+Maintainer: Support <support@bigswitch.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.8.4
+
+Package: onlp-powerpc-centec-e580-32x2q-r0
+Architecture: powerpc
+Depends: 
+Description: E580-32X2Q R0
+ E580-32X2Q R0 
